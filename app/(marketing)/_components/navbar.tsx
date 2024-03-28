@@ -42,7 +42,7 @@ const Navbar = () => {
         {status !== "loading" && status === "authenticated" && data.user?.image && data.user?.name && (
           <>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/documents">Enter Bashly</Link>
+              <Link href="/home">Enter Bashly</Link>
             </Button>
             <DropdownMenuDemo data={data} />
           </>
