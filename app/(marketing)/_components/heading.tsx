@@ -39,7 +39,7 @@ export const Heading = () => {
       )}
       {status !== "loading" && status === "authenticated" && (
         <Button asChild>
-          <Link href="/documents">
+          <Link href="/home">
             Enter Bashly
             <ArrowRight className="h-4 w-4 ml-2" />
           </Link>
