@@ -1,15 +1,20 @@
+import InitialModal from "@/components/modals/initial-modal"
+import dbConnect from "@/lib/dbConnect"
 import { initialProfile } from "@/lib/initial-profile"
+import { Bash } from "@/models/BashModels"
+import { redirect } from "next/navigation"
 
 const SetupPage = async () => {
   const profile = await initialProfile()
+  // Find first bash that this user is a member of!
+  await dbConnect()
+  const bash = await Bash.findOne({members: profile._id}).populate("members")
+
+  if (bash) {
+    return redirect(`/bashes/${bash._id}`)
+  }
   return (
-    <div className="h-full flex flex-col items-center justify-center space-y-4">
-
-      <h2 className="text-lg font-medium">
-        {profile.name}
-      </h2>
-
-    </div>
+    <InitialModal />
   )
 }
 
