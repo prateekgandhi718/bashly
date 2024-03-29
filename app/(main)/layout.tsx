@@ -21,9 +21,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   // Redirect to landing page, if not authenticated.
-  // if (status === "unauthenticated") {
-  //   return redirect("/");
-  // }
+  if (status === "unauthenticated") {
+    return redirect("/");
+  }
 
   return (
     <div className="h-full flex dark:bg-[#1F1F1F]">
