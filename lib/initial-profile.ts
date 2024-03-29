@@ -19,13 +19,14 @@ export const initialProfile = async () => {
     return profile;
   }
 
-  const newProfile = await Profile.create({
+  await Profile.create({
       userId: session.user?.id,
       name: `${session.user?.name}`,
       imageUrl: session.user?.image || "",
       email: session.user?.email
   });
 
+  const newProfile = await Profile.findOne({userId: session.user?.id})
   return newProfile;
 };
 
