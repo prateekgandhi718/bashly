@@ -44,7 +44,7 @@ const Navbar = () => {
             <Button variant="ghost" size="sm" asChild>
               <Link href="/home">Enter Bashly</Link>
             </Button>
-            <DropdownMenuDemo data={data} />
+            <DropdownMenuDemo />
           </>
         )}
         <ModeToggle />

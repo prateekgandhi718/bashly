@@ -2,33 +2,25 @@
 
 // Also, it is not an antipattern if you use many client components. Since if there are large number of users in your app, you also have to have large number of client components to execute javascript on thier browsers. If there are a lot of server components, compute would happen on the server and they would charge you for it.
 
-"use client";
+// Making this a server component since we cannot use server component (Navigation) inside a client component since Client Components are rendered after Server Components.
 
-import { Spinner } from "@/components/spinner";
-import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Navigation from "./_components/navigation";
+import { currentProfile } from "@/lib/current-profile";
 
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
-  const { status } = useSession();
+const MainLayout = async ({ children }: { children: React.ReactNode }) => {
+  const profile = await currentProfile()
 
-  if (status === "loading") {
-    return (
-      <div className="h-full flex items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
-
-  // Redirect to landing page, if not authenticated.
-  if (status === "unauthenticated") {
-    return redirect("/");
+  if (!profile) {
+    return redirect("/")
   }
 
   return (
-    <div className="h-full flex dark:bg-[#1F1F1F]">
-        <Navigation />
-      <main className="flex-1 h-full overflow-y-auto">{children}</main>
+    <div className="h-full dark:bg-[#1F1F1F]">
+      <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
+        <Navigation profile={profile}/>
+      </div>
+      <main className="md:pl-[72px] h-full">{children}</main>
     </div>
   );
 };

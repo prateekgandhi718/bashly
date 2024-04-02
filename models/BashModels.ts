@@ -8,9 +8,6 @@ const profileSchema = new Schema({
   name: String,
   imageUrl: String,
   email: String,
-  bashes: [{ type: Schema.Types.ObjectId, ref: 'Bash' }],
-  members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
-  channels: [{ type: Schema.Types.ObjectId, ref: 'Channel' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
@@ -21,8 +18,6 @@ const bashSchema = new Schema({
   imageUrl: String,
   inviteCode: { type: String, unique: true },
   profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
-  members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
-  channels: [{ type: Schema.Types.ObjectId, ref: 'Channel' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
