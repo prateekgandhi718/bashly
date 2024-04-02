@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { Cloud, Github, LifeBuoy, LogOut, User } from "lucide-react";
 
@@ -13,13 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Session } from "next-auth";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { getInitials } from "@/helpers/getInitialsFunc";
 
-const DropdownMenuDemo = ({ data }: { data: Session }) => {
-
+const DropdownMenuDemo = () => {
+  const { data } = useSession();
   const handleLogout = () => {
     try {
       signOut()
@@ -28,7 +28,7 @@ const DropdownMenuDemo = ({ data }: { data: Session }) => {
     }
   }
   return (
-    data.user && data.user.image &&
+    data?.user && data.user.image &&
     data.user.name && (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
