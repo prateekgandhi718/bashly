@@ -1,9 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-const { Schema } = mongoose;
+// Profile Schema
+export interface ProfileDocument extends Document {
+  userId: string;
+  name: string;
+  imageUrl: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-// Profile Model
-const profileSchema = new Schema({
+const profileSchema = new Schema<ProfileDocument>({
   userId: { type: String, unique: true },
   name: String,
   imageUrl: String,
@@ -12,8 +19,19 @@ const profileSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// Bash Model
-const bashSchema = new Schema({
+export const Profile = mongoose.models.Profile || mongoose.model<ProfileDocument>('Profile', profileSchema);
+
+// Bash Schema
+export interface BashDocument extends Document {
+  name: string;
+  imageUrl: string;
+  inviteCode: string;
+  profile: Schema.Types.ObjectId | ProfileDocument;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const bashSchema = new Schema<BashDocument>({
   name: String,
   imageUrl: String,
   inviteCode: { type: String, unique: true },
@@ -22,8 +40,18 @@ const bashSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// Member Model
-const memberSchema = new Schema({
+export const Bash = mongoose.models.Bash || mongoose.model<BashDocument>('Bash', bashSchema);
+
+// Member Schema
+export interface MemberDocument extends Document {
+  role: 'ADMIN' | 'MODERATOR' | 'GUEST';
+  profile: Schema.Types.ObjectId | ProfileDocument;
+  bash: Schema.Types.ObjectId | BashDocument;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const memberSchema = new Schema<MemberDocument>({
   role: { type: String, enum: ['ADMIN', 'MODERATOR', 'GUEST'], default: 'GUEST' },
   profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
   bash: { type: Schema.Types.ObjectId, ref: 'Bash' },
@@ -31,8 +59,19 @@ const memberSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// Channel Model
-const channelSchema = new Schema({
+export const Member = mongoose.models.Member || mongoose.model<MemberDocument>('Member', memberSchema);
+
+// Channel Schema
+export interface ChannelDocument extends Document {
+  name: string;
+  type: 'SYSTEM' | 'TEXT' | 'AUDIO' | 'VIDEO';
+  profile: Schema.Types.ObjectId | ProfileDocument;
+  bash: Schema.Types.ObjectId | BashDocument;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const channelSchema = new Schema<ChannelDocument>({
   name: String,
   type: { type: String, enum: ['SYSTEM', 'TEXT', 'AUDIO', 'VIDEO'], default: 'TEXT' },
   profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
@@ -41,11 +80,4 @@ const channelSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
-const Profile = mongoose.models.Profile || mongoose.model('Profile', profileSchema);
-const Bash = mongoose.models.Bash || mongoose.model('Bash', bashSchema);
-const Member = mongoose.models.Member || mongoose.model('Member', memberSchema);
-const Channel = mongoose.models.Channel || mongoose.model('Channel', channelSchema);
-
-export { Profile, Bash, Member, Channel };
-
-
+export const Channel = mongoose.models.Channel || mongoose.model<ChannelDocument>('Channel', channelSchema);
