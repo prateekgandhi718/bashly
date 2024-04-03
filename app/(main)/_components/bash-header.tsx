@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
-import { BashDocument } from "@/models/BashModels";
+import { BashDocument, MemberDocument } from "@/models/BashModels";
 import {
   ChevronDown,
   LogOut,
@@ -22,10 +22,11 @@ import {
 interface BashHeaderProps {
   bash: BashDocument;
   role: string;
+  members: any[] //This members is a special type which has the profile attribute populated!
 }
 
-const BashHeader = ({ bash, role }: BashHeaderProps) => {
-    const { onOpen } = useModal()
+const BashHeader = ({ bash, role, members }: BashHeaderProps) => {
+  const { onOpen } = useModal();
 
   const isAdmin = role === "ADMIN";
   const isModerator = isAdmin || role === "MODERATOR";
@@ -39,19 +40,25 @@ const BashHeader = ({ bash, role }: BashHeaderProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
         {isModerator && (
-          <DropdownMenuItem onClick={() => onOpen("invite", { bash: bash})} className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("invite", { bash: bash })}
+            className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
+          >
             Invite People
             <UserPlus className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("editBash", { bash: bash })}
+            className="px-3 py-2 text-sm cursor-pointer"
+          >
             Bash Settings
             <Settings className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem onClick={() => onOpen("members", {bash: bash, members: members})} className="px-3 py-2 text-sm cursor-pointer">
             Manage Members
             <Users className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
