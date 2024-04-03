@@ -51,6 +51,27 @@ const MembersModal = () => {
   const isModalOpen = isOpen && type === "members";
   const { bash, members } = data;
 
+  const onKick = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          bashId: bash?._id,
+        },
+      });
+
+      const response = await axios.delete(url);
+
+      router.refresh();
+      onOpen("members", { members: response.data });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  }
+
   const onRoleChange = async (memberId:string, role:string) => {
     // Need to send memberId in the query and then make the API respond back with the updated members array so that we can update the members state in our use modal store.
     try{
@@ -134,7 +155,7 @@ const MembersModal = () => {
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                        //   onClick={() => onKick(member.id)}
+                          onClick={() => onKick(member._id)}
                         >
                           <Gavel className="h-4 w-4 mr-2" />
                           Kick
@@ -144,7 +165,7 @@ const MembersModal = () => {
                   </div>
                 )}
                 {/* if we any axios request for a particular member show a spinner */}
-                {loadingId === member.id && (
+                {loadingId === member._id && (
                     <Loader2 className="animate-spin text-zinc-500 ml-auto w-4 h-4" />
                 )}
             </div>
