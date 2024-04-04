@@ -1,6 +1,6 @@
 import { BashDocument, MemberDocument } from "@/models/BashModels";
 import { create } from "zustand"
-export type ModalType = "createServer" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash";
+export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash";
 
 interface ModalData {
     bash?: BashDocument

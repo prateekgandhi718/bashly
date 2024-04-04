@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import FileUpload from "../file-upload";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -34,7 +35,14 @@ const formSchema = z.object({
   }),
 });
 const InitialModal = () => {
+  const [isMounted, setIsMounted] = useState(false); // To supress hydration warning.
+
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,6 +63,10 @@ const InitialModal = () => {
       console.error(error);
     }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <Dialog open>
