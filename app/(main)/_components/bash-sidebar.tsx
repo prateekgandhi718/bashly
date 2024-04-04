@@ -78,3 +78,5 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
 };
 
 export default BashSidebar;
+
+// The flow of data is like this - the data from the DB is fetched in this Server component. The data is then passed inside the BashHeader client component. When you click on the dropdown of manage members etc, then we update the zustand state by using onOpen action. 
