@@ -38,7 +38,7 @@ const CreateBashModal = () => {
   const { isOpen, onClose, type } = useModal()
   const router = useRouter();
 
-  const isModalOpen = isOpen && type === "createServer"
+  const isModalOpen = isOpen && type === "createBash"
 
   const form = useForm({
     resolver: zodResolver(formSchema),

@@ -13,11 +13,13 @@ import DropdownMenuDemo from "@/components/profileDropdown";
 const Navigation = async ({profile}: {profile: any}) => {
   // The redirecting if profile not found has already been handeled in the layout so no need to check in the children components. That acts as a middleware. 
 
+  // DO NOT USE LAYOUT AS THE MIDDLEWARE. Because of how NEXT works. It just pulls layout once and then just fetches the pages on top. It never fetches it again. so it is susceptible to data leaks. Use auth as usual in each component.
+
   // Find all the bashes this user is a member of.
   await dbConnect();
   const memberBashes = await Member.find({ profile: profile._id}).populate('bash')
   return (
-    <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1b1d20] py-3">
+    <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1b1d20] bg-[#E3E5E8] py-3">
       <NavigationAction />
       <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
       <ScrollArea className="flex-1 w-full">

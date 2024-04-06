@@ -41,7 +41,7 @@ const BashHeader = ({ bash, role, members }: BashHeaderProps) => {
       <DropdownMenuContent className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
         {isModerator && (
           <DropdownMenuItem
-            onClick={() => onOpen("invite", { bash: bash })}
+            onClick={() => onOpen("invite", { bash: bash, members: [] })}
             className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
           >
             Invite People
@@ -50,7 +50,7 @@ const BashHeader = ({ bash, role, members }: BashHeaderProps) => {
         )}
         {isAdmin && (
           <DropdownMenuItem
-            onClick={() => onOpen("editBash", { bash: bash })}
+            onClick={() => onOpen("editBash", { bash: bash, members: [] })}
             className="px-3 py-2 text-sm cursor-pointer"
           >
             Bash Settings
@@ -64,21 +64,21 @@ const BashHeader = ({ bash, role, members }: BashHeaderProps) => {
           </DropdownMenuItem>
         )}
         {isModerator && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem onClick={() => onOpen("createChannel")} className="px-3 py-2 text-sm cursor-pointer">
             Create Channel
             <PlusCircle className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isModerator && <DropdownMenuSeparator />}
         {isAdmin && (
-          <DropdownMenuItem className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem onClick={() => onOpen("deleteBash", {bash: bash, members: []})} className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
             Delete Bash
             <Trash className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {/* Now if we are not an admin -> we are a guest or a mod, we can leave a server. Admins cannot leave. They can only delete. */}
         {!isAdmin && (
-          <DropdownMenuItem className="dark:text-rose-400 text-rose-500 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem onClick={() => onOpen("leaveBash", {bash: bash, members: []})} className="dark:text-rose-400 text-rose-500 px-3 py-2 text-sm cursor-pointer">
             Leave Bash
             <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
