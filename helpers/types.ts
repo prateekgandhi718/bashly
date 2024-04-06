@@ -4,3 +4,9 @@ export enum ChannelType {
     AUDIO = "AUDIO",
     VIDEO = "VIDEO",
   }
+
+export enum MemberRole {
+    GUEST = "GUEST",
+    ADMIN = "ADMIN",
+    MODERATOR = "MODERATOR",
+  }

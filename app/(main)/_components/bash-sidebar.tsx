@@ -1,11 +1,28 @@
 import { currentProfile } from "@/lib/current-profile";
 import dbConnect from "@/lib/dbConnect";
-import { Bash, Channel, Member, MemberDocument } from "@/models/BashModels";
+import { Bash, Channel, ChannelDocument, Member, MemberDocument } from "@/models/BashModels";
 import { redirect } from "next/navigation";
 import BashHeader from "./bash-header";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import BashSearch from "./bash-search";
+import { ChannelType, MemberRole } from "@/helpers/types";
+import { Hash, Mic, Monitor, ShieldAlert, ShieldCheck, Video } from "lucide-react";
 
 interface BashSidebarProps {
   bashId: string;
+}
+
+const iconMap = {
+  [ChannelType.SYSTEM]: <Monitor className="mr-2 h-4 w-4"/>,
+  [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
+  [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
+  [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
+}
+
+const roleIconMap = {
+  [MemberRole.GUEST]: null,
+  [MemberRole.ADMIN]: <ShieldCheck className="h-4 w-4 mr-2 text-rose-500" />,
+  [MemberRole.MODERATOR]: <ShieldAlert className="h-4 w-4 mr-2 text-indigo-500" />,
 }
 
 const BashSidebar = async ({ bashId }: BashSidebarProps) => {
@@ -20,7 +37,7 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
   // Now fetch all the channels in this bash. order them by createdAt ascending.
   const channelsInBash = await Channel.find({ bash: bashId })
     .sort({ createdAt: 1 })
-    .lean();
+    .lean() as ChannelDocument[]
   // Then fetch all the members in for this bash. it should have all the details of the profile. order them by their role.
   const allMembersInBash = (await Member.find({ bash: bashId })
     .populate("profile")
@@ -73,6 +90,51 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
         role={ourRole}
         members={plainMembersInBash}
       />
+      <ScrollArea className="flex-1 px-3">
+        <div className="mt-2">
+          <BashSearch 
+            data={[
+              {
+                label: "Text Channels",
+                type: "channel",
+                data: textChannels?.map((channel) => ({
+                  id: channel._id.toString(),
+                  name: channel.name,
+                  icon: iconMap[channel.type],
+                }))
+              },
+              {
+                label: "Voice Channels",
+                type: "channel",
+                data: audioChannels?.map((channel) => ({
+                  id: channel._id.toString(),
+                  name: channel.name,
+                  icon: iconMap[channel.type],
+                }))
+              },
+              {
+                label: "Video Channels",
+                type: "channel",
+                data: videoChannels?.map((channel) => ({
+                  id: channel._id.toString(),
+                  name: channel.name,
+                  icon: iconMap[channel.type],
+                }))
+              },
+              {
+                label: "Members",
+                type: "member",
+                data: plainMembersInBash?.map((member:any) => ({
+                  id: member._id,
+                  name: member.profile.name,
+                  icon: roleIconMap[member.role as MemberRole],
+                }))
+              },
+            ]}
+          />
+        </div>
+
+      </ScrollArea>
     </div>
   );
 };
