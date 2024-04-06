@@ -9,11 +9,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import NavigationItem from "./navigation-item";
 import { ModeToggle } from "@/components/mode-toggle";
 import DropdownMenuDemo from "@/components/profileDropdown";
+import { currentProfile } from "@/lib/current-profile";
 
-const Navigation = async ({profile}: {profile: any}) => {
+const Navigation = async () => {
   // The redirecting if profile not found has already been handeled in the layout so no need to check in the children components. That acts as a middleware. 
 
   // DO NOT USE LAYOUT AS THE MIDDLEWARE. Because of how NEXT works. It just pulls layout once and then just fetches the pages on top. It never fetches it again. so it is susceptible to data leaks. Use auth as usual in each component.
+  const profile = await currentProfile()
+  if (!profile) {
+    return redirect("/")
+  }
 
   // Find all the bashes this user is a member of.
   await dbConnect();
