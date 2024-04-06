@@ -95,7 +95,7 @@ export interface MessageDocument extends Document {
 }
 
 const messageSchema = new Schema<MessageDocument>({
-  content: { type: String, required: true },
+  content: { type: String },
   fileUrl: { type: String },
   memberId: { type: Schema.Types.ObjectId, ref: 'Member' },
   channelId: { type: Schema.Types.ObjectId, ref: 'Channel' },
@@ -132,7 +132,7 @@ interface DirectMessageDocument extends Document {
 }
 
 const directMessageSchema = new Schema<DirectMessageDocument>({
-  content: { type: String, required: true },
+  content: { type: String },
   fileUrl: { type: String },
   memberId: { type: Schema.Types.ObjectId, ref: 'Member' },
   conversationId: { type: Schema.Types.ObjectId, ref: 'Conversation' },
