@@ -1,10 +1,12 @@
+import { ChannelType } from "@/helpers/types";
 import { BashDocument, MemberDocument } from "@/models/BashModels";
 import { create } from "zustand"
-export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash";
+export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel";
 
 interface ModalData {
     bash?: BashDocument
     members?: any[] //This members is a special type which has the profile attribute populated!
+    channelTypeToBeCreated?: ChannelType // This is when we'd click create channel in audio or video section + icon, the form should have default type to audio or video.
 }
 
 interface ModalStore {

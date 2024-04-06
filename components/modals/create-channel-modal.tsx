@@ -26,6 +26,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { ChannelType } from "@/helpers/types";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -39,11 +40,12 @@ const formSchema = z.object({
   type: z.nativeEnum(ChannelType)
 });
 const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal()
+  const { isOpen, onClose, type, data } = useModal()
   const router = useRouter();
   const params = useParams()
 
   const isModalOpen = isOpen && type === "createChannel"
+  const { channelTypeToBeCreated } = data
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -52,6 +54,15 @@ const CreateChannelModal = () => {
       type: ChannelType.TEXT
     },
   });
+
+  // To update the type of the form to be audio or video depending upon which + icon we choose from bash section
+  useEffect(() => {
+    if (channelTypeToBeCreated) {
+      form.setValue("type", channelTypeToBeCreated)
+    } else {
+      form.setValue("type", ChannelType.TEXT)
+    }
+  }, [channelTypeToBeCreated, form])
 
   const isLoading = form.formState.isSubmitting;
 
