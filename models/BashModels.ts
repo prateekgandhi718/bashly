@@ -81,3 +81,64 @@ const channelSchema = new Schema<ChannelDocument>({
 });
 
 export const Channel = mongoose.models.Channel || mongoose.model<ChannelDocument>('Channel', channelSchema);
+
+
+// Message Schema
+export interface MessageDocument extends Document {
+  content: string;
+  fileUrl?: string;
+  memberId: Schema.Types.ObjectId | MemberDocument;
+  channelId: Schema.Types.ObjectId | ChannelDocument;
+  deleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const messageSchema = new Schema<MessageDocument>({
+  content: { type: String, required: true },
+  fileUrl: { type: String },
+  memberId: { type: Schema.Types.ObjectId, ref: 'Member' },
+  channelId: { type: Schema.Types.ObjectId, ref: 'Channel' },
+  deleted: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+ 
+export const Message = mongoose.models.Message || mongoose.model<MessageDocument>('Message', messageSchema);
+
+// Conversation Schema
+interface ConversationDocument extends Document {
+  memberOneId: Schema.Types.ObjectId | MemberDocument;
+  memberTwoId: Schema.Types.ObjectId | MemberDocument;
+}
+
+const conversationSchema = new Schema<ConversationDocument>({
+  memberOneId: { type: Schema.Types.ObjectId, ref: 'Member' },
+  memberTwoId: { type: Schema.Types.ObjectId, ref: 'Member' },
+});
+
+export const Conversation = mongoose.models.Conversation || mongoose.model<ConversationDocument>('Conversation', conversationSchema);
+
+
+//DM Schema
+interface DirectMessageDocument extends Document {
+  content: string;
+  fileUrl?: string;
+  memberId: Schema.Types.ObjectId | MemberDocument;
+  conversationId: Schema.Types.ObjectId | ConversationDocument;
+  deleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const directMessageSchema = new Schema<DirectMessageDocument>({
+  content: { type: String, required: true },
+  fileUrl: { type: String },
+  memberId: { type: Schema.Types.ObjectId, ref: 'Member' },
+  conversationId: { type: Schema.Types.ObjectId, ref: 'Conversation' },
+  deleted: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const DirectMessage = mongoose.models.DirectMessage || mongoose.model<DirectMessageDocument>('DirectMessage', directMessageSchema);
