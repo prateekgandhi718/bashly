@@ -34,7 +34,7 @@ const BashChannel = ({channel, bash, role}: BashChannelProps) => {
   
     const onAction = (e: React.MouseEvent, action: ModalType) => {
       e.stopPropagation();
-      onOpen(action, { bash:bash });
+      onOpen(action, { bash:bash, channel: channel });
     }
   
     return (
