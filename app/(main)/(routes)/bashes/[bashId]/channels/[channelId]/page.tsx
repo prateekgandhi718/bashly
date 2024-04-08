@@ -1,5 +1,6 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
+import ChatMessages from "@/components/chat/chat-messages";
 import { ChannelType } from "@/helpers/types";
 import { currentProfile } from "@/lib/current-profile";
 import dbConnect from "@/lib/dbConnect";
@@ -31,10 +32,16 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   const member = await Member.findOne({
     bash: params.bashId,
     profile: profile._id,
-  });
+  }).lean() as any
 
   if (!channel || !member) {
     redirect("/home");
+  }
+
+  if (member) {
+    member._id = member._id.toString();
+    member.profile = member.profile.toString();
+    member.bash = member.bash.toString();
   }
 
   return (
@@ -46,7 +53,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
       />
       {channel.type === ChannelType.TEXT && (
         <>
-          {/* <ChatMessages
+          <ChatMessages
             member={member}
             name={channel.name}
             chatId={channel._id.toString()}
@@ -59,7 +66,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
             }}
             paramKey="channelId"
             paramValue={channel._id.toString()}
-          /> */}
+          />
           <ChatInput
             name={channel.name}
             type="channel"
