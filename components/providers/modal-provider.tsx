@@ -7,6 +7,7 @@ import EditChannelModal from "../modals/edit-channel-modal"
 import InviteModal from "../modals/invite-modal"
 import LeaveBashModal from "../modals/leave-bash-modal"
 import MembersModal from "../modals/members-modal"
+import MessageFileModal from "../modals/message-file-modal"
 
 export const ModalProvider = () => {
     return (
@@ -20,6 +21,7 @@ export const ModalProvider = () => {
             <DeleteBashModal />
             <DeleteChannelModal />
             <EditChannelModal />
+            <MessageFileModal />
         </>
     )
 }

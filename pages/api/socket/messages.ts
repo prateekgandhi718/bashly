@@ -14,7 +14,7 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfilePages(req, res);
+    const profile = await currentProfilePages(req, res); //a different way to access the session using the pages router.
     const { content, fileUrl } = req.body;
     const { bashId, channelId } = req.query;
     
