@@ -47,7 +47,6 @@ export async function GET(req: Request) {
     if (messages.length === MESSAGES_BATCH) {
       nextCursor = messages[messages.length - 1]._id;
     }
-
     return NextResponse.json({
       items: messages,
       nextCursor,
@@ -57,3 +56,6 @@ export async function GET(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+
+// This messages API inside the App router is only GET API. The messages API inside the pages router (index.ts) is the one to save the message to db and also emit the message to the socket listeners.
