@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import { Loader2, ServerCrash } from "lucide-react";
 
 import { useChatQuery } from "@/hooks/use-chat-query";
-// import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 import {
   MemberDocument,
@@ -16,6 +15,7 @@ import {
 import ChatWelcome from "./chat-welcome";
 import ChatItem from "./chat-item";
 import { useChatSocket } from "@/hooks/use-chat-socket";
+import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -63,13 +63,14 @@ const ChatMessages = ({
       paramValue,
     });
     useChatSocket({ queryKey, addKey, updateKey }); //This is a hook which return nothing. It just has a useEffect hook inside it. The only thing we can use to update chat messages component is use useEffect hook here only. Or use a hook. Cant make it a component right?
-  //   useChatScroll({
-  //     chatRef,
-  //     bottomRef,
-  //     loadMore: fetchNextPage,
-  //     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
-  //     count: data?.pages?.[0]?.items?.length ?? 0,
-  //   })
+
+    useChatScroll({
+      chatRef,
+      bottomRef,
+      loadMore: fetchNextPage,
+      shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+      count: data?.pages?.[0]?.items?.length ?? 0,
+    })
 
   if (status === "pending") {
     return (

@@ -17,7 +17,7 @@ export const useChatScroll = ({
 }: ChatScrollProps) => {
   const [hasInitialized, setHasInitialized] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { //This is to load messages automatically when the user reaches top
     const topDiv = chatRef?.current;
 
     const handleScroll = () => {
@@ -35,7 +35,7 @@ export const useChatScroll = ({
     }
   }, [shouldLoadMore, loadMore, chatRef]);
 
-  useEffect(() => {
+  useEffect(() => { // THis is to scroll to the bottom automatically
     const bottomDiv = bottomRef?.current;
     const topDiv = chatRef.current;
     const shouldAutoScroll = () => {
