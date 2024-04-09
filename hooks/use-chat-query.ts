@@ -41,7 +41,7 @@ export const useChatQuery = ({
     queryKey: [queryKey],
     queryFn: fetchMessages,
     getNextPageParam: (lastPage) => lastPage?.nextCursor,
-    refetchInterval: isConnected ? false : 1000,
+    refetchInterval: isConnected ? false : 1000, //If socket is connected we don't refetch. If socket is not connected, the query will fetch the messages automatically after every 1s.
     initialPageParam: undefined
   });
 

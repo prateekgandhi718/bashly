@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 import { UserAvatar } from "@/components/user-avatar";
-// import { ActionTooltip } from "@/components/action-tooltip";
 import { cn } from "@/lib/utils";
 import {
   Form,
@@ -69,11 +68,11 @@ const ChatItem = ({
   const router = useRouter();
 
   const onMemberClick = () => {
-    if (member.id === currentMember.id) {
+    if (member._id === currentMember._id) {
       return;
     }
   
-    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+    router.push(`/bashes/${params?.bashId}/conversations/${member._id}`);
   }
 
   useEffect(() => {
@@ -236,10 +235,10 @@ const ChatItem = ({
           )}
           <ActionTooltip label="Delete">
             <Trash
-            //   onClick={() => onOpen("deleteMessage", { 
-            //     apiUrl: `${socketUrl}/${id}`,
-            //     query: socketQuery,
-            //    })}
+              onClick={() => onOpen("deleteMessage", { 
+                apiUrl: `${socketUrl}/${id}`,
+                query: socketQuery,
+               })}
               className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>

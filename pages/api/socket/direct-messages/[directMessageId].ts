@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { Bash, Channel, Member, Message } from "@/models/BashModels";
+import { Bash, Channel, Conversation, DirectMessage, Member, Message } from "@/models/BashModels";
 import { MemberRole, NextApiResponseServerIo } from "@/helpers/types";
 import { currentProfilePages } from "@/lib/current-profile-pages-router";
 import dbConnect from "@/lib/dbConnect";
@@ -14,59 +14,48 @@ export default async function handler(
 
   try {
     const profile = await currentProfilePages(req, res);
-    const { messageId, bashId, channelId } = req.query;
+    const { directMessageId, conversationId } = req.query;
     const { content } = req.body;
 
     if (!profile) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    if (!bashId) {
-      return res.status(400).json({ error: "Bash ID missing" });
-    }
-
-    if (!channelId) {
-      return res.status(400).json({ error: "Channel ID missing" });
+    if (!conversationId) {
+      return res.status(400).json({ error: "Convo ID missing" });
     }
 
     await dbConnect();
-    const bash = await Bash.findById(bashId);
 
-    if (!bash) {
-      return res.status(404).json({ error: "Bash not found" });
+    const conversation = await Conversation.findById(conversationId).populate({
+        path: 'memberOneId memberTwoId',
+        populate: {
+            path: 'profile',
+        },
+    })
+
+    if (!conversation) {
+        return res.status(404).json({message: "Convo not found"})
     }
 
-    const member = await Member.findOne({
-      profile: profile._id,
-      bash: bash._id,
-    });
+    // Check if we are member one or two
+    const memberId = conversation.memberOneId.profile._id.toString() === profile._id.toString() ? conversation.memberOneId._id : conversation.memberTwoId._id
+    // Fetch this member
+    const member = await Member.findById(memberId).lean() as any
 
-    if (!member) {
-      return res.status(404).json({ error: "Member not found" });
-    }
-
-    const channel = await Channel.findOne({
-      _id: channelId,
-      bash: bash._id,
-    });
-
-    if (!channel) {
-      return res.status(404).json({ error: "Channel not found" });
-    }
-
-    let message = await Message.findOne({
-      _id: messageId,
-      channelId: channel._id,
+    let directMessage = await DirectMessage.findOne({
+      _id: directMessageId,
+      conversationId: conversation._id,
     }).populate({
       path: "memberId",
       populate: { path: "profile" },
     });
 
-    if (!message || message.deleted) {
+    if (!directMessage || directMessage.deleted) {
       return res.status(404).json({ error: "Message not found" });
     }
 
-    const isMessageOwner = message.memberId._id.toString() === member._id.toString();
+    const isMessageOwner = directMessage.memberId._id.toString() === member._id.toString();
     const isAdmin = member.role === MemberRole.ADMIN;
     const isModerator = member.role === MemberRole.MODERATOR;
     const canModify = isMessageOwner || isAdmin || isModerator;
@@ -77,8 +66,8 @@ export default async function handler(
 
     const now = new Date()
     if (req.method === "DELETE") {
-      message = await Message.findByIdAndUpdate(
-        message._id,
+      directMessage = await DirectMessage.findByIdAndUpdate(
+        directMessage._id,
         {
           fileUrl: null,
           content: "This message has been deleted.",
@@ -97,8 +86,8 @@ export default async function handler(
         return res.status(401).json({ error: "Unauthorized" });
       }
 
-      message = await Message.findByIdAndUpdate(
-        message._id,
+      directMessage = await DirectMessage.findByIdAndUpdate(
+        directMessage._id,
         { content, updatedAt: now },
         { new: true }
       ).populate({
@@ -107,11 +96,11 @@ export default async function handler(
       });
     }
 
-    const updateKey = `chat:${channelId}:messages:update`; //Watch for updating of a message event! (deleting or updating both)
+    const updateKey = `chat:${conversationId}:messages:update`; //Watch for updating of a message event! (deleting or updating both)
 
-    res?.socket?.server?.io?.emit(updateKey, message);
+    res?.socket?.server?.io?.emit(updateKey, directMessage);
 
-    return res.status(200).json(message);
+    return res.status(200).json(directMessage);
   } catch (error) {
     console.log("[MESSAGE_ID_PAGES_ROUTER]", error);
     return res.status(500).json({ error: "Internal Error" });

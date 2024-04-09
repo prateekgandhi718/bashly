@@ -22,16 +22,11 @@ const findConversation = async (memberOneId:string, memberTwoId:string) => {
             memberOneId,
             memberTwoId
         }).populate({
-            path: 'memberOneId',
+            path: 'memberOneId memberTwoId',
             populate: {
-                path: 'profile'
-            }
-        }).populate({
-            path: 'memberTwoId',
-            populate: {
-                path: 'profile'
-            }
-        }); // Populate memberOneId and memberTwoId with the member objects and their profiles
+                path: 'profile',
+            },
+        }) // Populate memberOneId and memberTwoId with the member objects and their profiles
 
         return conversation;
     } catch (error) {
@@ -46,17 +41,19 @@ const newConversation = async (memberOneId:string, memberTwoId:string) => {
 
     try {
         // Create a new conversation
-        const conversation = await Conversation.create({
+        const conversationCreated = await Conversation.create({
             memberOneId,
             memberTwoId
-        }, { 
-            populate: [
-                { path: 'memberOneId', populate: { path: 'profile' } },
-                { path: 'memberTwoId', populate: { path: 'profile' } }
-            ]
         });
 
-        return conversation;
+        const conversation = await Conversation.findById(conversationCreated._id).populate({
+            path: 'memberOneId memberTwoId',
+            populate: {
+                path: 'profile',
+            },
+        })
+
+        return conversation; // The reason for creating and then finding and populating is it is creating an empty object as well if we populate it on the created object directly.
     } catch (error) {
         console.error("Error creating conversation:", error);
         return null;
