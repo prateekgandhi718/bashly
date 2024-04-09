@@ -107,7 +107,7 @@ export default async function handler(
       });
     }
 
-    const updateKey = `chat:${channelId}:messages:update`;
+    const updateKey = `chat:${channelId}:messages:update`; //Watch for updating of a message event! (deleting or updating both)
 
     res?.socket?.server?.io?.emit(updateKey, message);
 

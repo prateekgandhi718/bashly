@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import { Loader2, ServerCrash } from "lucide-react";
 
 import { useChatQuery } from "@/hooks/use-chat-query";
-// import { useChatSocket } from "@/hooks/use-chat-socket";
 // import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 import {
@@ -16,6 +15,7 @@ import {
 } from "@/models/BashModels";
 import ChatWelcome from "./chat-welcome";
 import ChatItem from "./chat-item";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -49,8 +49,8 @@ const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
-  const addKey = `chat:${chatId}:messages`;
-  const updateKey = `chat:${chatId}:messages:update`;
+  const addKey = `chat:${chatId}:messages`; //This should be the same as the addKey defined in the socket api.
+  const updateKey = `chat:${chatId}:messages:update`; // This should be the same as the addKey defined in the socket api.
 
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
@@ -62,7 +62,7 @@ const ChatMessages = ({
       paramKey,
       paramValue,
     });
-  //   useChatSocket({ queryKey, addKey, updateKey });
+    useChatSocket({ queryKey, addKey, updateKey }); //This is a hook which return nothing. It just has a useEffect hook inside it. The only thing we can use to update chat messages component is use useEffect hook here only. Or use a hook. Cant make it a component right?
   //   useChatScroll({
   //     chatRef,
   //     bottomRef,

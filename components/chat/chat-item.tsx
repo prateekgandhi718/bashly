@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 import { UserAvatar } from "@/components/user-avatar";
-// import { ActionTooltip } from "@/components/action-tooltip";
 import { cn } from "@/lib/utils";
 import {
   Form,
@@ -69,11 +68,11 @@ const ChatItem = ({
   const router = useRouter();
 
   const onMemberClick = () => {
-    if (member.id === currentMember.id) {
+    if (member._id === currentMember._id) {
       return;
     }
   
-    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+    router.push(`/bashes/${params?.bashId}/conversations/${member._id}`);
   }
 
   useEffect(() => {
