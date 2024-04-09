@@ -8,7 +8,7 @@ const MobileToggle = ({ bashId }: { bashId: string }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button variant="ghost" size="icon" className="md:hidden -ml-2 mr-2">
           <Menu />
         </Button>
       </SheetTrigger>
