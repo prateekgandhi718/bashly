@@ -6,6 +6,7 @@ import AuthProvider from "@/components/authProvider/authProvider";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { SocketProvider } from "@/components/providers/socket-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,7 +48,10 @@ export default function RootLayout({
           >
             <SocketProvider>
               <ModalProvider />
-              <QueryProvider>{children}</QueryProvider>
+              <QueryProvider>
+                <NextTopLoader showSpinner={false} color='linear-gradient(90deg, #b656cb, #10a1a0)'  />
+                {children}
+                </QueryProvider>
             </SocketProvider>
           </ThemeProvider>
         </AuthProvider>

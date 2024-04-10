@@ -16,6 +16,7 @@ import ChatWelcome from "./chat-welcome";
 import ChatItem from "./chat-item";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { loadingMessagesArray, pickRandomLoadingString } from "@/helpers/loadingMessagesArray";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -77,7 +78,7 @@ const ChatMessages = ({
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Loading messages...
+          {pickRandomLoadingString(loadingMessagesArray)}
         </p>
       </div>
     );
