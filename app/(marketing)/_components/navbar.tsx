@@ -16,11 +16,11 @@ const Navbar = () => {
 
   const handleEnter = () => {
     try {
-      signIn("google")
+      signIn("google");
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   return (
     <div
@@ -39,15 +39,11 @@ const Navbar = () => {
             </Button>
           </>
         )}
-        {status !== "loading" && status === "authenticated" && data.user?.image && data.user?.name && (
-          <>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/home">Enter Bashly</Link>
-            </Button>
-            <DropdownMenuDemo />
-          </>
-        )}
         <ModeToggle />
+        {status !== "loading" &&
+          status === "authenticated" &&
+          data.user?.image &&
+          data.user?.name && <DropdownMenuDemo />}
       </div>
     </div>
   );
