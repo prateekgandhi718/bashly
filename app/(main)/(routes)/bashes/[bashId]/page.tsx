@@ -1,7 +1,40 @@
-const BashIdPage = () => {
-  return (
-    <div>Bash ID Page. On this page we will show the start date and end date of bash. We can build a form and save the data and then display the data. But the side nav mobile is in chat header so make sure to have that here.</div>
-  )
+import ChatHeader from "@/components/chat/chat-header";
+import { currentProfile } from "@/lib/current-profile";
+import dbConnect from "@/lib/dbConnect";
+import { Bash } from "@/models/BashModels";
+import { redirect } from "next/navigation";
+
+// Remember server components already have the params as props.
+interface BashIdPageProps {
+  params: {
+    bashId: string;
+  };
 }
 
-export default BashIdPage
+const BashIdPage = async ({ params }: BashIdPageProps) => {
+  const profile = await currentProfile();
+
+  if (!profile) {
+    return redirect("/home");
+  }
+
+  await dbConnect();
+
+  // Find this bash
+  const bash = await Bash.findById(params.bashId);
+
+  if (!bash) {
+    return redirect("/home");
+  }
+
+  return (
+    <ChatHeader
+      name={bash.name}
+      bashId={bash._id.toString()}
+      type="bash"
+      imageUrl={bash.imageUrl}
+    />
+  );
+};
+
+export default BashIdPage;
