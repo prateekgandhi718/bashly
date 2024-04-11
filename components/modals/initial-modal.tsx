@@ -25,6 +25,11 @@ import FileUpload from "../file-upload";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "../ui/calendar";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -33,7 +38,17 @@ const formSchema = z.object({
   imageUrl: z.string().min(1, {
     message: "An image for the Bash is required.",
   }),
+  startDate: z.date({
+    required_error: "A start date for the bash is required.",
+  }),
+  endDate: z.date({
+    required_error: "An end date for the bash is required.",
+  })
+}).refine((obj) => obj.endDate >= obj.startDate, {
+  path: ['endDate'],
+  message: "Time travelling is here?"
 });
+
 const InitialModal = () => {
   const [isMounted, setIsMounted] = useState(false); // To supress hydration warning.
 
@@ -48,6 +63,8 @@ const InitialModal = () => {
     defaultValues: {
       name: "",
       imageUrl: "",
+      startDate: new Date(),
+      endDate: new Date(),
     },
   });
 
@@ -82,7 +99,7 @@ const InitialModal = () => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="space-y-8 px-6">
+            <div className="space-y-1 px-6 flex flex-col justify-center items-center gap-2">
               <div className="flex items-center justify-center text-center">
                 <FormField
                   control={form.control}
@@ -96,6 +113,7 @@ const InitialModal = () => {
                           onChange={field.onChange}
                         />
                       </FormControl>
+                      <FormMessage className="text-red-800" />
                     </FormItem>
                   )}
                 />
@@ -111,7 +129,7 @@ const InitialModal = () => {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0 w-60"
                         placeholder="Enter Bash name"
                         {...field}
                       />
@@ -120,6 +138,86 @@ const InitialModal = () => {
                   </FormItem>
                 )}
               />
+
+                <FormField
+                  control={form.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">Start date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) => date < new Date()}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage className="text-red-800" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">End date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) => date < new Date() || date < form.getValues().startDate}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage className="text-red-800" />
+                    </FormItem>
+                  )}
+                />
+
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>

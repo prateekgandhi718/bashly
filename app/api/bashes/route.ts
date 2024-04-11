@@ -6,7 +6,7 @@ import { Bash, Channel, Member } from "@/models/BashModels"
 
 export async function POST(req: Request) {
     try{
-        const { name, imageUrl } = await req.json()
+        const { name, imageUrl, startDate, endDate } = await req.json()
         const profile = await currentProfile()
 
         if (!profile) {
@@ -19,6 +19,8 @@ export async function POST(req: Request) {
             name: name,
             imageUrl: imageUrl,
             inviteCode: uuidv4(),
+            startDate: startDate,
+            endDate: endDate,
         })
 
         // Create a new channel for this bash named "general" 
