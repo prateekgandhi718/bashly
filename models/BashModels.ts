@@ -16,10 +16,12 @@ const profileSchema = new Schema<ProfileDocument>({
   imageUrl: String,
   email: String,
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
-export const Profile = mongoose.models.Profile || mongoose.model<ProfileDocument>('Profile', profileSchema);
+export const Profile =
+  mongoose.models.Profile ||
+  mongoose.model<ProfileDocument>("Profile", profileSchema);
 
 // Bash Schema
 export interface BashDocument extends Document {
@@ -27,6 +29,8 @@ export interface BashDocument extends Document {
   imageUrl: string;
   inviteCode: string;
   profile: Schema.Types.ObjectId | ProfileDocument;
+  startDate: Date;
+  endDate: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,16 +39,19 @@ const bashSchema = new Schema<BashDocument>({
   name: String,
   imageUrl: String,
   inviteCode: { type: String, unique: true },
-  profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
+  profile: { type: Schema.Types.ObjectId, ref: "Profile" },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
-export const Bash = mongoose.models.Bash || mongoose.model<BashDocument>('Bash', bashSchema);
+export const Bash =
+  mongoose.models.Bash || mongoose.model<BashDocument>("Bash", bashSchema);
 
 // Member Schema
 export interface MemberDocument extends Document {
-  role: 'ADMIN' | 'MODERATOR' | 'GUEST';
+  role: "ADMIN" | "MODERATOR" | "GUEST";
   profile: Schema.Types.ObjectId | ProfileDocument;
   bash: Schema.Types.ObjectId | BashDocument;
   createdAt: Date;
@@ -52,19 +59,25 @@ export interface MemberDocument extends Document {
 }
 
 const memberSchema = new Schema<MemberDocument>({
-  role: { type: String, enum: ['ADMIN', 'MODERATOR', 'GUEST'], default: 'GUEST' },
-  profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
-  bash: { type: Schema.Types.ObjectId, ref: 'Bash' },
+  role: {
+    type: String,
+    enum: ["ADMIN", "MODERATOR", "GUEST"],
+    default: "GUEST",
+  },
+  profile: { type: Schema.Types.ObjectId, ref: "Profile" },
+  bash: { type: Schema.Types.ObjectId, ref: "Bash" },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
-export const Member = mongoose.models.Member || mongoose.model<MemberDocument>('Member', memberSchema);
+export const Member =
+  mongoose.models.Member ||
+  mongoose.model<MemberDocument>("Member", memberSchema);
 
 // Channel Schema
 export interface ChannelDocument extends Document {
   name: string;
-  type: 'SYSTEM' | 'TEXT' | 'AUDIO' | 'VIDEO';
+  type: "SYSTEM" | "TEXT" | "AUDIO" | "VIDEO";
   profile: Schema.Types.ObjectId | ProfileDocument;
   bash: Schema.Types.ObjectId | BashDocument;
   createdAt: Date;
@@ -73,15 +86,20 @@ export interface ChannelDocument extends Document {
 
 const channelSchema = new Schema<ChannelDocument>({
   name: String,
-  type: { type: String, enum: ['SYSTEM', 'TEXT', 'AUDIO', 'VIDEO'], default: 'TEXT' },
-  profile: { type: Schema.Types.ObjectId, ref: 'Profile' },
-  bash: { type: Schema.Types.ObjectId, ref: 'Bash' },
+  type: {
+    type: String,
+    enum: ["SYSTEM", "TEXT", "AUDIO", "VIDEO"],
+    default: "TEXT",
+  },
+  profile: { type: Schema.Types.ObjectId, ref: "Profile" },
+  bash: { type: Schema.Types.ObjectId, ref: "Bash" },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
 });
 
-export const Channel = mongoose.models.Channel || mongoose.model<ChannelDocument>('Channel', channelSchema);
-
+export const Channel =
+  mongoose.models.Channel ||
+  mongoose.model<ChannelDocument>("Channel", channelSchema);
 
 // Message Schema
 export interface MessageDocument extends Document {
@@ -97,14 +115,16 @@ export interface MessageDocument extends Document {
 const messageSchema = new Schema<MessageDocument>({
   content: { type: String },
   fileUrl: { type: String },
-  memberId: { type: Schema.Types.ObjectId, ref: 'Member' },
-  channelId: { type: Schema.Types.ObjectId, ref: 'Channel' },
+  memberId: { type: Schema.Types.ObjectId, ref: "Member" },
+  channelId: { type: Schema.Types.ObjectId, ref: "Channel" },
   deleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
- 
-export const Message = mongoose.models.Message || mongoose.model<MessageDocument>('Message', messageSchema);
+
+export const Message =
+  mongoose.models.Message ||
+  mongoose.model<MessageDocument>("Message", messageSchema);
 
 // Conversation Schema
 interface ConversationDocument extends Document {
@@ -113,12 +133,13 @@ interface ConversationDocument extends Document {
 }
 
 const conversationSchema = new Schema<ConversationDocument>({
-  memberOneId: { type: Schema.Types.ObjectId, ref: 'Member' },
-  memberTwoId: { type: Schema.Types.ObjectId, ref: 'Member' },
+  memberOneId: { type: Schema.Types.ObjectId, ref: "Member" },
+  memberTwoId: { type: Schema.Types.ObjectId, ref: "Member" },
 });
 
-export const Conversation = mongoose.models.Conversation || mongoose.model<ConversationDocument>('Conversation', conversationSchema);
-
+export const Conversation =
+  mongoose.models.Conversation ||
+  mongoose.model<ConversationDocument>("Conversation", conversationSchema);
 
 //DM Schema
 interface DirectMessageDocument extends Document {
@@ -134,11 +155,13 @@ interface DirectMessageDocument extends Document {
 const directMessageSchema = new Schema<DirectMessageDocument>({
   content: { type: String },
   fileUrl: { type: String },
-  memberId: { type: Schema.Types.ObjectId, ref: 'Member' },
-  conversationId: { type: Schema.Types.ObjectId, ref: 'Conversation' },
+  memberId: { type: Schema.Types.ObjectId, ref: "Member" },
+  conversationId: { type: Schema.Types.ObjectId, ref: "Conversation" },
   deleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
-export const DirectMessage = mongoose.models.DirectMessage || mongoose.model<DirectMessageDocument>('DirectMessage', directMessageSchema);
+export const DirectMessage =
+  mongoose.models.DirectMessage ||
+  mongoose.model<DirectMessageDocument>("DirectMessage", directMessageSchema);

@@ -33,6 +33,8 @@ const BashIdPage = async ({ params }: BashIdPageProps) => {
       bashId={bash._id.toString()}
       type="bash"
       imageUrl={bash.imageUrl}
+      startDate={bash.startDate}
+      endDate={bash.endDate}
     />
   );
 };
