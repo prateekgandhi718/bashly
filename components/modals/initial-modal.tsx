@@ -87,7 +87,7 @@ const InitialModal = () => {
 
   return (
     <Dialog open>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
+      <DialogContent className="bg-white dark:bg-[#313338] text-black dark:text-zinc-50 p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center">
             Create your Bash
@@ -123,13 +123,13 @@ const InitialModal = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500">
                       Bash Name
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0 w-60"
+                        className="border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 w-60"
                         placeholder="Enter Bash name"
                         {...field}
                       />
@@ -170,7 +170,6 @@ const InitialModal = () => {
                             selected={field.value}
                             onSelect={field.onChange}
                             disabled={(date) => date < new Date()}
-                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>
@@ -209,7 +208,6 @@ const InitialModal = () => {
                             selected={field.value}
                             onSelect={field.onChange}
                             disabled={(date) => date < new Date() || date < form.getValues().startDate}
-                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>
@@ -219,7 +217,7 @@ const InitialModal = () => {
                 />
 
             </div>
-            <DialogFooter className="bg-gray-100 px-6 py-4">
+            <DialogFooter className="bg-gray-100 dark:bg-[#313338] px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
                 Create
               </Button>
