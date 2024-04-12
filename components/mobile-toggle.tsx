@@ -13,6 +13,8 @@ const MobileToggle = ({ bashId }: { bashId: string }) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 flex gap-0">
+        {/* the empty span is added so that the focus on add buttton should be prevented when the sheet is opened. We could have used onOpenAutoFocus={(e) => e.preventDefault()} on Sheet content but since we are using this on server side we cannot use event handlers!  */}
+        <span tabIndex={0}></span> 
         <div className="w-[72px]">
           <Navigation />
         </div>

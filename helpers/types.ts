@@ -4,9 +4,8 @@ import { Server as SocketIOServer } from "socket.io";
 
 export enum ChannelType {
   SYSTEM = "SYSTEM",
-  TEXT = "TEXT",
-  AUDIO = "AUDIO",
-  VIDEO = "VIDEO",
+  OPEN = "OPEN",
+  MODS = "MODS",
 }
 
 export enum MemberRole {

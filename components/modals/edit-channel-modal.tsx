@@ -50,11 +50,11 @@ const EditChannelModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT
+      type: ChannelType.OPEN
     },
   });
 
-  // To update the type of the form to be audio or video depending upon which + icon we choose from bash section
+  // To update the type of the form to be mods depending upon which + icon we choose from bash section
   useEffect(() => {
     if (channel) {
         form.setValue("name", channel.name)
@@ -138,7 +138,7 @@ const EditChannelModal = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {["TEXT", "AUDIO", "VIDEO"].map((type, index) => (
+                        {["OPEN", "MODS"].map((type, index) => (
                           <SelectItem
                             key={index}
                             value={type}
