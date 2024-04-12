@@ -86,7 +86,7 @@ const CreateBashModal = () => {
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white dark:bg-[#313338] text-black dark:text-zinc-50 p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
+        <DialogHeader className="pt-6 px-6">
           <DialogTitle className="text-2xl text-center">
             Create your Bash
           </DialogTitle>
@@ -96,7 +96,7 @@ const CreateBashModal = () => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <div className="space-y-1 px-6 flex flex-col justify-center items-center gap-2">
               <div className="flex items-center justify-center text-center">
                 <FormField
@@ -142,7 +142,7 @@ const CreateBashModal = () => {
                   name="startDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">Start date</FormLabel>
+                      <FormLabel className="uppercase text-xs font-bold text-zinc-500">Start date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -180,7 +180,7 @@ const CreateBashModal = () => {
                   name="endDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">End date</FormLabel>
+                      <FormLabel className="uppercase text-xs font-bold text-zinc-500">End date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>

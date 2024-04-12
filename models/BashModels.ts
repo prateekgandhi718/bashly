@@ -77,7 +77,7 @@ export const Member =
 // Channel Schema
 export interface ChannelDocument extends Document {
   name: string;
-  type: "SYSTEM" | "TEXT" | "AUDIO" | "VIDEO";
+  type: "SYSTEM" | "OPEN" | "MODS";
   profile: Schema.Types.ObjectId | ProfileDocument;
   bash: Schema.Types.ObjectId | BashDocument;
   createdAt: Date;
@@ -88,8 +88,8 @@ const channelSchema = new Schema<ChannelDocument>({
   name: String,
   type: {
     type: String,
-    enum: ["SYSTEM", "TEXT", "AUDIO", "VIDEO"],
-    default: "TEXT",
+    enum: ["SYSTEM", "OPEN", "MODS"],
+    default: "OPEN",
   },
   profile: { type: Schema.Types.ObjectId, ref: "Profile" },
   bash: { type: Schema.Types.ObjectId, ref: "Bash" },

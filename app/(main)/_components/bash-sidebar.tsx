@@ -14,11 +14,11 @@ import BashSearch from "./bash-search";
 import { ChannelType, MemberRole } from "@/helpers/types";
 import {
   Hash,
-  Mic,
+
   Monitor,
   ShieldAlert,
   ShieldCheck,
-  Video,
+
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import BashSection from "./bash-section";
@@ -31,9 +31,8 @@ interface BashSidebarProps {
 
 const iconMap = {
   [ChannelType.SYSTEM]: <Monitor className="mr-2 h-4 w-4" />,
-  [ChannelType.TEXT]: <Hash className="mr-2 h-4 w-4" />,
-  [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
-  [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
+  [ChannelType.OPEN]: <Hash className="mr-2 h-4 w-4" />,
+  [ChannelType.MODS]: <ShieldCheck className="mr-2 h-4 w-4" />,
 };
 
 const roleIconMap = {
@@ -72,17 +71,14 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
     bash: channel.bash.toString(),
   }));
   // Categorizing channels
-  const textChannels = plainChannelsInBash.filter(
-    (channel) => channel.type === "TEXT"
+  const openChannels = plainChannelsInBash.filter(
+    (channel) => channel.type === ChannelType.OPEN
   );
-  const audioChannels = plainChannelsInBash.filter(
-    (channel) => channel.type === "AUDIO"
-  );
-  const videoChannels = plainChannelsInBash.filter(
-    (channel) => channel.type === "VIDEO"
+  const modsChannels = plainChannelsInBash.filter(
+    (channel) => channel.type === ChannelType.MODS
   );
   const systemChannels = plainChannelsInBash.filter(
-    (channel) => channel.type === "SYSTEM"
+    (channel) => channel.type === ChannelType.SYSTEM
   );
 
   if (!bash) {
@@ -122,27 +118,18 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
           <BashSearch
             data={[
               {
-                label: "Text Channels",
+                label: "Open Channels",
                 type: "channel",
-                data: textChannels?.map((channel) => ({
+                data: openChannels?.map((channel) => ({
                   id: channel._id.toString(),
                   name: channel.name,
                   icon: iconMap[channel.type],
                 })),
               },
               {
-                label: "Voice Channels",
+                label: "Mods Only",
                 type: "channel",
-                data: audioChannels?.map((channel) => ({
-                  id: channel._id.toString(),
-                  name: channel.name,
-                  icon: iconMap[channel.type],
-                })),
-              },
-              {
-                label: "Video Channels",
-                type: "channel",
-                data: videoChannels?.map((channel) => ({
+                data: modsChannels?.map((channel) => ({
                   id: channel._id.toString(),
                   name: channel.name,
                   icon: iconMap[channel.type],
@@ -182,16 +169,16 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
             </div>
           </div>
         )}
-        {!!textChannels?.length && (
+        {!!openChannels?.length && (
           <div className="mb-2">
             <BashSection
               sectionType="channels"
-              channelType={ChannelType.TEXT}
+              channelType={ChannelType.OPEN}
               role={ourRole}
-              label="Text Channels"
+              label="Open Channels"
             />
             <div className="space-y-[2px]">
-              {textChannels.map((channel) => (
+              {openChannels.map((channel) => (
                 <BashChannel
                   key={channel._id}
                   channel={channel as any}
@@ -202,36 +189,16 @@ const BashSidebar = async ({ bashId }: BashSidebarProps) => {
             </div>
           </div>
         )}
-        {!!audioChannels?.length && (
+        {!!modsChannels?.length && ourRole !== MemberRole.GUEST && (
           <div className="mb-2">
             <BashSection
               sectionType="channels"
-              channelType={ChannelType.AUDIO}
+              channelType={ChannelType.MODS}
               role={ourRole}
-              label="Voice Channels"
+              label="Mods Only"
             />
             <div className="space-y-[2px]">
-              {audioChannels.map((channel) => (
-                <BashChannel
-                  key={channel._id}
-                  channel={channel as any}
-                  role={ourRole}
-                  bash={bashWithStrings}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        {!!videoChannels?.length && (
-          <div className="mb-2">
-            <BashSection
-              sectionType="channels"
-              channelType={ChannelType.VIDEO}
-              role={ourRole}
-              label="Video Channels"
-            />
-            <div className="space-y-[2px]">
-              {videoChannels.map((channel) => (
+              {modsChannels.map((channel) => (
                 <BashChannel
                   key={channel._id}
                   channel={channel as any}

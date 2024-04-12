@@ -5,7 +5,7 @@ import { ChannelType, MemberRole } from "@/helpers/types"
 import { ModalType, useModal } from "@/hooks/use-modal-store";
 import { cn } from "@/lib/utils";
 import { BashDocument, ChannelDocument } from "@/models/BashModels"
-import { Edit, Hash, Lock, Mic, Monitor, Trash, Video } from "lucide-react";
+import { Edit, Hash, Lock, Monitor, ShieldCheck, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 interface BashChannelProps {
@@ -16,9 +16,8 @@ interface BashChannelProps {
 
 const iconMap = {
     [ChannelType.SYSTEM]: Monitor,
-    [ChannelType.TEXT]: Hash,
-    [ChannelType.AUDIO]: Mic,
-    [ChannelType.VIDEO]: Video,
+    [ChannelType.OPEN]: Hash,
+    [ChannelType.MODS]: ShieldCheck,
   }
 
 const BashChannel = ({channel, bash, role}: BashChannelProps) => {

@@ -1,11 +1,16 @@
 import InitialModal from "@/components/modals/initial-modal"
+import { currentProfile } from "@/lib/current-profile"
 import dbConnect from "@/lib/dbConnect"
 import { initialProfile } from "@/lib/initial-profile"
 import { Bash, Member } from "@/models/BashModels"
 import { redirect } from "next/navigation"
 
 const SetupPage = async () => {
-  const profile = await initialProfile()
+  const profile = await currentProfile()
+  if (!profile) {
+    redirect("/")
+  }
+
   await dbConnect()
   let redirectPath = null
   // Find first bash that this user is a member of!

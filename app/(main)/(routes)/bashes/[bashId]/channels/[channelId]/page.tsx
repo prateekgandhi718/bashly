@@ -29,10 +29,10 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   const channel = (await Channel.findById(params.channelId)) as ChannelDocument;
 
   // Find this member in this bash
-  const member = await Member.findOne({
+  const member = (await Member.findOne({
     bash: params.bashId,
     profile: profile._id,
-  }).lean() as any
+  }).lean()) as any;
 
   if (!channel || !member) {
     redirect("/home");
@@ -51,39 +51,32 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
         bashId={channel.bash.toString()}
         type="channel"
       />
-      {channel.type === ChannelType.TEXT && (
-        <>
-          <ChatMessages
-            member={member}
-            name={channel.name}
-            chatId={channel._id.toString()}
-            type="channel"
-            apiUrl="/api/messages"
-            socketUrl="/api/socket/messages"
-            socketQuery={{
-              channelId: channel._id.toString(),
-              bashId: channel.bash.toString(),
-            }}
-            paramKey="channelId"
-            paramValue={channel._id.toString()}
-          />
-          <ChatInput
-            name={channel.name}
-            type="channel"
-            apiUrl="/api/socket/messages"
-            query={{
-              channelId: channel._id.toString(),
-              bashId: channel.bash.toString(),
-            }}
-          />
-        </>
-      )}
-      {/* {channel.type === ChannelType.AUDIO && (
-        <MediaRoom chatId={channel.id} video={false} audio={true} />
-      )} */}
-      {/* {channel.type === ChannelType.VIDEO && (
-        <MediaRoom chatId={channel.id} video={true} audio={true} />
-      )} */}
+
+      <>
+        <ChatMessages
+          member={member}
+          name={channel.name}
+          chatId={channel._id.toString()}
+          type="channel"
+          apiUrl="/api/messages"
+          socketUrl="/api/socket/messages"
+          socketQuery={{
+            channelId: channel._id.toString(),
+            bashId: channel.bash.toString(),
+          }}
+          paramKey="channelId"
+          paramValue={channel._id.toString()}
+        />
+        <ChatInput
+          name={channel.name}
+          type="channel"
+          apiUrl="/api/socket/messages"
+          query={{
+            channelId: channel._id.toString(),
+            bashId: channel.bash.toString(),
+          }}
+        />
+      </>
     </div>
   );
 };

@@ -6,14 +6,14 @@
 
 import { redirect } from "next/navigation";
 import Navigation from "./_components/navigation";
-import { currentProfile } from "@/lib/current-profile";
+import { initialProfile } from "@/lib/initial-profile";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
-  const profile = await currentProfile()
+  const profile = await initialProfile()
 
   if (!profile) {
     return redirect("/")
-  }
+  } 
 
   return (
     <div className="h-full dark:bg-[#1F1F1F]">
