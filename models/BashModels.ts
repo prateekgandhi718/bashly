@@ -165,3 +165,62 @@ const directMessageSchema = new Schema<DirectMessageDocument>({
 export const DirectMessage =
   mongoose.models.DirectMessage ||
   mongoose.model<DirectMessageDocument>("DirectMessage", directMessageSchema);
+
+
+// Itinerary Schema
+export interface ItineraryDocument extends Document {
+  bash: Schema.Types.ObjectId | BashDocument;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const itinerarySchema = new Schema<ItineraryDocument>({
+  bash: { type: Schema.Types.ObjectId, ref: "Bash" },
+  name: { type: String },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const Itinerary =
+  mongoose.models.Itinerary ||
+  mongoose.model<ItineraryDocument>("Itinerary", itinerarySchema);
+
+// Event Schema
+export interface EventDocument extends Document {
+  itinerary: Schema.Types.ObjectId | ItineraryDocument;
+  startDate: Date;
+  endDate: Date;
+  startTime: Date;
+  endTime: Date;
+  description: string;
+  logo: string; // emoji
+  status: "pending" | "next up" | "happening" | "done";
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const eventSchema = new Schema<EventDocument>({
+  itinerary: { type: Schema.Types.ObjectId, ref: "Itinerary" },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  startTime: { type: Date, required: true },
+  endTime: { type: Date, required: true },
+  description: { type: String, required: true },
+  logo: { type: String },
+  status: {
+    type: String,
+    enum: ["pending", "next up", "happening", "done"],
+    default: "pending",
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const Event =
+  mongoose.models.Event ||
+  mongoose.model<EventDocument>("Event", eventSchema);
