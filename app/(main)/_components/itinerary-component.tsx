@@ -1,27 +1,28 @@
-// This will be a server component which will fetch all the events for a particular itinerary and then pass the events inside of a client component as props.
+// This will be another server component which will fetch all the events for a particular itinerary and then pass the events inside of a client component as props.
 
 import dbConnect from "@/lib/dbConnect";
-import { Event, EventDocument } from "@/models/BashModels";
+import { Event, EventDocument, ItineraryDocument } from "@/models/BashModels";
 import EventComponent from "./event-component";
 
 interface ItineraryComponentProps {
     bashId: string;
-    itineraryId: string
+    itinerary: any
 }
 
-const ItineraryComponent = async ({bashId, itineraryId}: ItineraryComponentProps) => {
+const ItineraryComponent = async ({bashId, itinerary}: ItineraryComponentProps) => {
   await dbConnect();
 
   // Find all the events present in this itinerary.
-  const events = await Event.find({itinerary: itineraryId}).lean() as any[]
+  const events = await Event.find({itinerary: itinerary._id}).lean() as any[]
 
   const plainEvents = events.map((ev) => ({
     ...ev,
+    _id: ev._id.toString(),
     itinerary: ev.itinerary.toString()
   }))
 
   return (
-    <EventComponent events={plainEvents} />
+    <EventComponent itinerary={itinerary} events={plainEvents} />
   )
 }
 

@@ -127,7 +127,7 @@ const CreateBashModal = () => {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 w-60"
+                        className="ring-1 ring-gray-300 dark:ring-neutral-500 focus-visible:ring-1 dark:focus-visible:ring-2 text-black dark:text-white focus-visible:ring-offset-0 w-60 bg-transparent"
                         placeholder="Enter Bash name"
                         {...field}
                       />
@@ -149,7 +149,7 @@ const CreateBashModal = () => {
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
+                                "w-[240px] pl-3 text-left font-normal bg-transparent",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -187,7 +187,7 @@ const CreateBashModal = () => {
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
+                                "w-[240px] pl-3 text-left font-normal bg-transparent",
                                 !field.value && "text-muted-foreground"
                               )}
                             >

@@ -1,5 +1,6 @@
 import CreateBashModal from "../modals/create-bash-modal"
 import CreateChannelModal from "../modals/create-channel-modal"
+import CreateEventModal from "../modals/create-event-modal"
 import CreateItineraryModal from "../modals/create-itinerary-modal"
 import DeleteBashModal from "../modals/delete-bash-modal"
 import DeleteChannelModal from "../modals/delete-channel-modal"
@@ -26,6 +27,7 @@ export const ModalProvider = () => {
             <MessageFileModal />
             <DeleteMessageModal />
             <CreateItineraryModal />
+            <CreateEventModal />
         </>
     )
 }

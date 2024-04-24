@@ -14,8 +14,8 @@ interface CreateItineraryProps {
 const CreateItineraryComponent = ({bash}: CreateItineraryProps) => {
 const {onOpen} = useModal()
   return (
-    <div>
-      <ActionTooltip side="right" align="center" label="Add Itinerary">
+    <div className="flex justify-center items-center">
+      <ActionTooltip side="bottom" align="center" label="Add Itinerary">
         <button onClick={() => onOpen("createItinerary", { bash: bash})} className="group flex items-center">
           <div
             className="flex mx-3 my-3 h-[24px] w-[24px] rounded-[12x] group-hover:rounded-[8px] transition-all overflow-hidden items-center justify-center bg-background

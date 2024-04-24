@@ -193,10 +193,9 @@ export const Itinerary =
 // Event Schema
 export interface EventDocument extends Document {
   itinerary: Schema.Types.ObjectId | ItineraryDocument;
-  startDate: Date;
-  endDate: Date;
-  startTime: Date;
-  endTime: Date;
+  name: string;
+  startDateTime: Date;
+  endDateTime: Date;
   description: string;
   logo: string; // emoji
   status: "pending" | "next up" | "happening" | "done";
@@ -206,11 +205,10 @@ export interface EventDocument extends Document {
 
 const eventSchema = new Schema<EventDocument>({
   itinerary: { type: Schema.Types.ObjectId, ref: "Itinerary" },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
-  startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true },
-  description: { type: String, required: true },
+  name: { type: String, required: true },
+  startDateTime: { type: Date, required: true },
+  endDateTime: { type: Date, required: true },
+  description: { type: String },
   logo: { type: String },
   status: {
     type: String,
