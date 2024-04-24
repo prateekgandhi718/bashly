@@ -1,7 +1,7 @@
 import { ChannelType } from "@/helpers/types";
-import { BashDocument, ChannelDocument, MemberDocument } from "@/models/BashModels";
+import { BashDocument, ChannelDocument, ItineraryDocument, MemberDocument } from "@/models/BashModels";
 import { create } from "zustand"
-export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage";
+export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage" | "createItinerary" | "createEvent";
 
 interface ModalData {
     bash?: BashDocument
@@ -10,6 +10,7 @@ interface ModalData {
     channelTypeToBeCreated?: ChannelType // This is when we'd click create channel in audio or video section + icon, the form should have default type to audio or video.
     apiUrl?: string // For file attachment in message
     query?: Record<string, any> // For file attachment in message
+    itinerary?: ItineraryDocument
 }
 
 interface ModalStore {
