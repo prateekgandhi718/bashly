@@ -13,7 +13,7 @@ const ItineraryComponent = async ({bashId, itinerary}: ItineraryComponentProps) 
   await dbConnect();
 
   // Find all the events present in this itinerary.
-  const events = await Event.find({itinerary: itinerary._id}).lean() as any[]
+  const events = await Event.find({itinerary: itinerary._id}).sort({ startDateTime: 1 }).lean() as any[]
 
   const plainEvents = events.map((ev) => ({
     ...ev,

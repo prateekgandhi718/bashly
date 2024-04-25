@@ -4,6 +4,7 @@ import ActionTooltip from "@/components/action-tooltip";
 import { useModal } from "@/hooks/use-modal-store";
 import { EventDocument } from "@/models/BashModels";
 import { CalendarPlus } from "lucide-react";
+import EventFlow from "./event-flow";
 
 interface EventComponentProps {
   itinerary: any
@@ -25,7 +26,7 @@ const EventComponent = ({
             onClick={() => onOpen("createEvent", {itinerary: itinerary})}
             className="group flex items-center"
           >
-            <div className="mx-3 my-3 h-[24px] w-[24px] rounded-[12x] group-hover:rounded-[8px] transition-all overflow-hidden bg-background dark:bg-[#2B2D31] bg-[#F2F3F5]">
+            <div className="mx-3 my-3 h-[24px] w-[24px] rounded-[12x] group-hover:rounded-[8px] transition-all overflow-hidden bg-transparent dark:bg-[#2B2D31]">
               <CalendarPlus />
             </div>
           </button>
@@ -37,7 +38,7 @@ const EventComponent = ({
               to get started.
             </div>
           ) : (
-            <div>Here all the events will flow.</div>
+            <EventFlow events={events} />
           )}
         </div>
       </div>
