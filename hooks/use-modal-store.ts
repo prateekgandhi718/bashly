@@ -1,7 +1,7 @@
-import { ChannelType } from "@/helpers/types";
+import { ChannelType, MemberRole } from "@/helpers/types";
 import { BashDocument, ChannelDocument, EventDocument, ItineraryDocument, MemberDocument } from "@/models/BashModels";
 import { create } from "zustand"
-export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage" | "createItinerary" | "createEvent" | "editEvent";
+export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage" | "createItinerary" | "createEvent" | "editEvent" | "editEventReadOnly";
 
 interface ModalData {
     bash?: BashDocument

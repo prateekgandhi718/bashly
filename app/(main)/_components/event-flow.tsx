@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/helpers/formatDateFunc";
+import { MemberRole } from "@/helpers/types";
 import { useModal } from "@/hooks/use-modal-store";
 import { EventDocument } from "@/models/BashModels";
 import { differenceInSeconds } from "date-fns";
@@ -9,8 +10,9 @@ import "react-circular-progressbar/dist/styles.css";
 
 interface EventFlowProps {
   events: EventDocument[] | [];
+  role: MemberRole
 }
-const EventFlow = ({ events }: EventFlowProps) => {
+const EventFlow = ({ events, role }: EventFlowProps) => {
   const { onOpen } = useModal();
 
   const [progressValues, setProgressValues] = useState<number[]>([]);
@@ -60,7 +62,10 @@ const EventFlow = ({ events }: EventFlowProps) => {
             <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
               {formatDate(event.startDateTime)}
             </div>
-            <button style={{ width: 60, height: 60, margin: 10 }} onClick={() => onOpen("editEvent", {event: event})}>
+            <button style={{ width: 60, height: 60, margin: 10 }} onClick={() => {
+              const modalType = role !== MemberRole.GUEST ? "editEvent" : "editEventReadOnly";
+              onOpen(modalType, {event: event})
+              }}>
               <CircularProgressbarWithChildren value={progressValues[index] ?? 0} styles={{ path: { stroke: getProgressColor(index) }}}>
                 {event.logo}
                 <p className="text-xs uppercase font-semibold text-zinc-500 dark:text-zinc-400">

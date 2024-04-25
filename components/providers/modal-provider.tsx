@@ -8,6 +8,7 @@ import { DeleteMessageModal } from "../modals/delete-message-modal"
 import EditBashModal from "../modals/edit-bash-modal"
 import EditChannelModal from "../modals/edit-channel-modal"
 import EditEventModal from "../modals/edit-event-modal"
+import EditEventReadOnlyModal from "../modals/edit-event-read-only-modal"
 import InviteModal from "../modals/invite-modal"
 import LeaveBashModal from "../modals/leave-bash-modal"
 import MembersModal from "../modals/members-modal"
@@ -30,6 +31,7 @@ export const ModalProvider = () => {
             <CreateItineraryModal />
             <CreateEventModal />
             <EditEventModal />
+            <EditEventReadOnlyModal />
         </>
     )
 }
