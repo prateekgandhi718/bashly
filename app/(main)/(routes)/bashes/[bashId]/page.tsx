@@ -79,7 +79,7 @@ const BashIdPage = async ({ params }: BashIdPageProps) => {
               <CarouselItem key={itinerary._id}>
                 <div className="p-4">
                   <Card>
-                    <CardContent className="h-96 p-6 dark:bg-[#2B2D31] bg-[#F2F3F5]">
+                    <CardContent className="h-auto p-6 dark:bg-[#2B2D31] bg-[#F2F3F5]">
                       <ItineraryComponent
                         bashId={plainBash._id}
                         itinerary={itinerary}

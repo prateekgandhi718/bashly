@@ -1,7 +1,7 @@
 import { ChannelType } from "@/helpers/types";
-import { BashDocument, ChannelDocument, ItineraryDocument, MemberDocument } from "@/models/BashModels";
+import { BashDocument, ChannelDocument, EventDocument, ItineraryDocument, MemberDocument } from "@/models/BashModels";
 import { create } from "zustand"
-export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage" | "createItinerary" | "createEvent";
+export type ModalType = "createBash" | "invite" | "editBash" | "members" | "createChannel" | "leaveBash" | "deleteBash" | "editChannel" | "deleteChannel" | "messageFile" | "deleteMessage" | "createItinerary" | "createEvent" | "editEvent";
 
 interface ModalData {
     bash?: BashDocument
@@ -11,6 +11,7 @@ interface ModalData {
     apiUrl?: string // For file attachment in message
     query?: Record<string, any> // For file attachment in message
     itinerary?: ItineraryDocument
+    event?: EventDocument
 }
 
 interface ModalStore {
