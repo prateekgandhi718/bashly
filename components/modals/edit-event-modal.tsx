@@ -132,7 +132,7 @@ const EditEventModal = () => {
             Edit {event.name}
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Edit the event's details.
+            Edit the details of the event.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

@@ -114,7 +114,7 @@ const CreateItineraryModal = () => {
             Create an Itinerary for {bash?.name}
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            Inside an itinerary you'll have your events.
+            Inside an itinerary you will have your events.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
