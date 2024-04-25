@@ -41,9 +41,9 @@ const EventFlow = ({ events }: EventFlowProps) => {
   const getProgressColor = (index: number): string => {
     const progress = progressValues[index] ?? 0;
     if (progress === 100) {
-      return "green"; // Completed (Green)
+      return "#99ff99"; // Completed (Green)
     } else if (progress > 0) {
-      return "#FFA500"; // In Progress (Yellow)
+      return "#FFC107"; // In Progress (Yellow)
     } else {
       return "blue"; // Not Started Yet (Blue)
     }
@@ -64,7 +64,7 @@ const EventFlow = ({ events }: EventFlowProps) => {
               <CircularProgressbarWithChildren value={progressValues[index] ?? 0} styles={{ path: { stroke: getProgressColor(index) }}}>
                 {event.logo}
                 <p className="text-xs uppercase font-semibold text-zinc-500 dark:text-zinc-400">
-                  {event.name && event.name.length > 6 ? event.name.slice(0, 5) + "..." : event.name}
+                  {event.name && event.name.length > 6 ? event.name.slice(0, 4) + "..." : event.name}
                 </p>
               </CircularProgressbarWithChildren>
             </button>
