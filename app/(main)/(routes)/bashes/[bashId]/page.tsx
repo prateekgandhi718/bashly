@@ -9,12 +9,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { MemberRole } from "@/helpers/types";
 import { currentProfile } from "@/lib/current-profile";
 import dbConnect from "@/lib/dbConnect";
 import {
   Bash,
   Itinerary,
   ItineraryDocument,
+  Member,
 } from "@/models/BashModels";
 import { redirect } from "next/navigation";
 
@@ -61,6 +63,15 @@ const BashIdPage = async ({ params }: BashIdPageProps) => {
     bash: iten.bash.toString(),
   }))
 
+  // Get the role
+  const allMembersInBash = (await Member.find({ bash: params.bashId })
+  .populate("profile")
+  .sort({ role: 1 })
+  .lean()) as any;
+  const ourRole = allMembersInBash.find(
+    (member: any) => member.profile._id.toString() === profile._id.toString()
+  )?.role;
+  
   return (
     <div>
       <ChatHeader
@@ -71,7 +82,9 @@ const BashIdPage = async ({ params }: BashIdPageProps) => {
         startDate={bash.startDate}
         endDate={bash.endDate}
       />
-      <CreateItineraryComponent bash={plainBash} />
+      {ourRole !== MemberRole.GUEST && (
+        <CreateItineraryComponent bash={plainBash} />
+      )}
       {!!plainItineraries?.length && (
         <Carousel className="w-full">
           <CarouselContent>
@@ -83,6 +96,7 @@ const BashIdPage = async ({ params }: BashIdPageProps) => {
                       <ItineraryComponent
                         bashId={plainBash._id}
                         itinerary={itinerary}
+                        role={ourRole}
                       />
                     </CardContent>
                   </Card>
